@@ -1,0 +1,35 @@
+#include "pch.h"
+#include <iostream>
+using namespace std;
+
+int main()
+
+int Menu = 0;
+
+cout << "Blackjack \n\n Start game (1) \n\n Tutorial(2) \n\n About(3) \n\n Exit Game(4)
+
+switch (Menu) {
+	case 1:
+	START_GAME = TRUE;
+	break;
+
+	case 2:
+	cout << " The British version of the card game 21 is called pontoon; \n the American version of this card game is called blackjack or 21. \n It is a card game were the players play against the dealer to try and get their cards the closest to 21.  " << endl;
+	
+
+	case 3:
+	cout << " With each round the player is dealt two cards and the computer player is also dealt two cards. \n The player can then either stick (no more cards are dealt) or twist; which means deal another card, \n this process is repeated until bust (lose go over 21) or stick." << endl;
+	
+
+	case 4:
+	Pause;
+	Return 0;
+
+	default:
+	cout << "Invalid option. Please enter a number between 1-4. " << endl;
+
+}
+
+if START_GAME = TRUE
+do
+Play21

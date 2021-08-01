@@ -1,0 +1,134 @@
+#include "pch.h"
+#include <iostream>
+#include <ctime>
+#include <string>
+
+using namespace std;
+
+//prototypes...
+void play21(void);
+int dealCards(int, string);
+void hit(int &);
+void determineWinner(int, int);
+int Random(int, int);
+
+
+void main() {
+
+	char keepPlaying = 'n'; //loop control variable
+
+	do {
+		play21();
+
+		//keep playing?
+		cout << "Play Again (y/n)?";
+		cin >> keepPlaying;
+	} while (keepPlaying == 'Y' || keepPlaying == 'y');
+}
+
+void play21(void) {
+	//play one hand of 21
+
+	//randomize the cards
+	srand((int)time(0));
+
+	// deal the cards
+	int person = dealCards(2, "Your Card:");
+	cout << " = " << person << endl;
+	int house = dealCards(2, "Dealer's Cards:");
+	cout << " = " << house << endl;
+
+	// Ask if human wants a hit and keep hitting...
+	hit(person);
+	cout << endl;
+
+	//Determine if computer takes a hit
+	while ((house <= 21) && (person <= 21))
+	{
+		if (person < house)
+		{
+			break;
+		}
+		house += dealCards(1, "The Computer takes a card ");
+		cout << endl;
+	}
+
+	//show who won....
+	determineWinner(person, house);
+}
+
+void determineWinner(int humanScore, int houseScore)
+//Compare the scores to see who won
+{
+	if (humanScore == 21)
+		cout << "You have 21. You win!" << endl;
+	else if ((humanScore < 21) && (humanScore > houseScore))
+		cout << "Your hand is closest to 21. You win!" << endl;
+	else
+		if (houseScore > 21 && humanScore <= 21)
+			cout << "Dealer is bust. You win!";
+		else
+			cout << "The Dealer has won! Better luck next time." << endl;
+}
+
+
+
+int dealCards(int numberOfCards, string message)
+//This function deals the cards
+{
+	int cards = numberOfCards;
+	int return_value = 0;
+	int value = 0;
+
+	for (int a = 0; a < numberOfCards; a++)
+	{
+
+		value = Random(1, 10);
+		cout << message << " " << value;
+		if (cards)
+			cout << " , ";
+		return_value += value;
+
+	}
+	return return_value;
+
+}
+
+
+void hit(int &playerScore)//This function asks the human if they want another card -- 'a hit'
+{
+	char hit = 'y';
+
+
+	while (hit == 'y' || hit == 'Y')
+	{//player has not busted
+		cout << endl;
+		cout << "Do you want to hit?";
+		cin >> hit;
+		cout << endl;
+
+		if (hit == 'y')
+		{ //player wants hit
+			playerScore += dealCards(1, "Dealer hands you a card "); // adds humanScore to dealCards()
+			cout << "Your current score is: " << playerScore << endl;
+		}
+		if (hit == 'n')
+		{ //players does not want hit
+			cout << "You have chosen to stand" << endl;
+			cout << "Your current score is: " << playerScore;
+		}
+		if (playerScore > 21)
+		{//player has busted
+			cout << "Oh no! You're bust.";
+			hit = 'n';
+		}
+	}
+}
+
+
+
+int Random(int lowerLimit, int upperLimit)
+{
+	//returns a random number within the given boundary
+	return 1 + rand() % (upperLimit - lowerLimit + 1);
+}

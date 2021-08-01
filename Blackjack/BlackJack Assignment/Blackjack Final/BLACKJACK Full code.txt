@@ -1,0 +1,191 @@
+#include "pch.h"
+#include <iostream>
+#include <cstdlib> //drand function
+#include <ctime> // time function
+#include <Windows.h> //Sleep function
+#include <vector>
+
+using namespace std;
+
+int main();
+
+	// Using structure to pass multiple variables to functions easily
+	struct Game
+	{
+		// Vector to store players hand
+
+		std::vector<int> player_hand;
+		// Vector to store dealers hand
+
+		std::vector<int> dealer_hand;
+		// Array to store card deck
+		int deck[52] =
+		{
+		1,2,3,4,5,6,7,8,9,10,10,10,10,
+		1,2,3,4,5,6,7,8,9,10,10,10,10,
+		1,2,3,4,5,6,7,8,9,10,10,10,10,
+		1,2,3,4,5,6,7,8,9,10,10,10,10
+		}
+		;
+	};
+
+	// Function: deals a card and sets the value of that card in the deck to -1.
+	Game deal_card(Game game1, bool is_player) {
+
+		// Initialise variables
+		int output = -1;
+		int card = 0;
+
+		// Keep drawing a card until it finds one that hasnt been picked already
+		while (output == -1) {
+			card = rand() % 52; // Randomly generate a card ID
+			output = game1.deck[card]; // Find the value of the card
+		}
+
+		game1.deck[card] = -1; // Set the drawn card value to -1 so we know its taken
+
+		switch (is_player) {
+		case true:
+			game1.player_hand.push_back(output); // Add the card to the players deck.
+			break;
+		case false:
+			game1.dealer_hand.push_back(output); // Add the card to the players deck.
+			break;
+		}
+
+		return(game1);
+	}
+
+
+	int evaluate_hand(vector<int> hand) {
+
+		// Initialise variables
+		int total = 0;
+
+			// Add up the total value of the cards in the hand
+			for (int i = 0; i < hand.size(); i++) {
+				total += hand[i];
+			}
+
+		// Check if the total value is over 21
+		if (total > 21) {
+			// Player Loses, return -1.
+			return(-1);
+		}
+		else {
+			// If the hand is not over 21, return the value
+			return(total);
+		}
+	}
+
+	int main() {
+
+		// Initialise Variables
+		char menu_input = 'y';
+		char choice;
+		int hand_value;
+		bool start_game = false; // this will be false until the user presses ‘h’
+		bool game_in_progress = false; // This will tell us if a game is being played or not.
+
+		while (menu_input != 'e') {
+
+			// Menu code
+			while (start_game == false) { //Keep the user inside this loop until they exit or start game
+
+				// Welcoming user and main menu
+				cout << " Welcome to Blackjack!\n\n\n";
+				cout << " Press 's' to Start a new game\n";
+				cout << " Press 'h' for instructions on the game\n";
+				cout << " Press 'a' for information about the game\n";
+				cout << " Press 'e' to exit the game\n";
+
+				// Menu Choice
+				cin >> menu_input;
+
+				switch (menu_input) {
+					case 's':
+					start_game = true;
+					break;
+					case 'h':
+					cout << " You are playing against the dealer (AI). You must aim to get the total of both your cards as close to 21 as possible. You can press 'hit' to receive another card, or you can settle with your current cards by selecting 'stick'. Whichever of you are closest to 21 will be crowned the victor!Keep in mind... If you both have the same value of cards,the dealer wins.So he has the slight advantage!Good luck. ";
+					break;
+					case 'a':
+					cout << " Blackjack, also known as 'Pontoon' or '21', is a popular card game played around the world. It is a comparing card game between the Players and the Dealer.The aim of the game is to beat the dealer by getting your cards to total as close to 21 as possible.Each player and the dealer receives two cards at the beginning of the game.Competing in turns, the players can choose to either 'stick' with what they have, or 'hit' and receive an extra card, however if their cards equal a total higher than 21, they lose!";
+					break;
+					case 'e':
+					return 0;
+					default:
+					cout << "Invalid option. Please try again.";
+				}
+			}
+
+			// If the code gets to this point the user has pressed play.
+
+			Game;
+
+			Game game1; // Create the deck and player hands.
+				game_in_progress = true;
+
+			while (game_in_progress == true) {
+
+				// Deal 2 cards to the player and dealer
+				for (int i = 0; i < 2; i++) {
+					game1 = deal_card(game1, true);
+					game1 = deal_card(game1, false);
+				}
+
+				// Find out what the players hand value is
+				cout << "Your hand value is: " << evaluate_hand(game1.player_hand);
+
+				char choice = 'b'; // Choice is not set to anything meaningful.
+
+				// Ask the player what they want to do until they decide to stick.
+				while (choice != 's'); {
+
+					cout << "Choose your next move... hit or stick? [h/s]";
+					cin >> choice;
+
+					if (choice == 'h') {
+
+						// If the player picks 'h', deal them a card.
+						game1 = deal_card(game1, true);
+						// Find out what the players hand value is
+						hand_value = evaluate_hand(game1.player_hand);
+						cout << "Your hand value is: " << hand_value;
+
+						// Check if the hand value is over 21
+						if (hand_value > 21) {
+							cout << "You have lost. Better luck next time!";
+							game_in_progress == false;
+						}
+					}
+					else {
+
+						cout << "invalid key, try again...";
+
+					}
+				}
+
+				// Now that the player has done their turn, do the dealers turn.
+				// While the dealers hand is less than the players hand, keep drawing.
+				int dealers_hand = evaluate_hand(game1.dealer_hand);
+				int players_hand = evaluate_hand(game1.player_hand);
+
+				while (dealers_hand < players_hand) {
+					game1 = deal_card(game1, false); // Draw card
+					cout << "Dealers hand value is:" << evaluate_hand(game1.dealer_hand);
+					dealers_hand = evaluate_hand(game1.dealer_hand); // Update dealers hand.
+				}
+
+				if (dealers_hand == -1) {
+					cout << "Dealer bust. Player wins!";
+				}
+				else {
+					cout << "Dealer wins!";
+				}
+
+				start_game == false; // Set to false so the code goes back to the menu loop after it ends
+				game_in_progress = false; // End the current game and go back to the menu
+			}
+		}
+	}

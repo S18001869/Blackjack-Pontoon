@@ -1,0 +1,53 @@
+Blackjack 2.0
+
+Round Created
+With each round the player is dealt two cards and the computer player is also dealt two cards. (Player = 2 Cards, AI = 2 Cards)
+The player can then either stick (no more cards are dealt) or twist (deal another card), this process is repeated until bust (over 21) or stick.
+
+
+Data Structure
+
+Menu (Selection/ loop) 
+- New Game (IF "New Game" is selected, Start round)
+- Help (IF "Help" is selected, cout >> "How to play. The rules are to blackjack are..."
+- About (IF "About" is selected, cout >> "Blackjack (or Pontoon) is a card game..."
+- Exit Game (IF "Exit Game" is selected, return to menu.
+(The player should be able to play until they want to exit, returning him to the main menu)
+
+^ Menu not apart of main game, but must be accessible at any time.
+
+
+Round: 
+{
+Deal Cards
+- Give player two random cards
+- Give AI (Dealer) two random cards
+- IF player has an ace, choose: '1' OR '11'
+
+Player 1: Choose Action (Stick or twist)
+- Chooses option 1, proceed to neck section.
+- Chooses option 2, gives player another card.
+
+AI (Dealer): Choose Action (Stick or twist)
+- If both numbers above 17, stick.
+- Else, twist and receive an extra card then immediately stick.
+- IF AI recieves an ace, choose ace value '1' IF above overall card value above 10, else choose ace value '11'. Else continue. (Nested Loop)
+
+Which hand is best (Winning Hand):
+Hierarchy of hands:
+1. 21 is the best hand (Pontoon)
+2. Hand of five cards totalling 21 (Five Card Trick)
+3. Hand of three or four cards totalling 21 or less.
+4. Hands with 20 or fewer points and fewer than five cards rank in order of their point value – the nearer to 21 the better.
+5. Hands with more than 21 points are bust and are worthless.
+6. If the computer and a player have equal valued hands, then the computer (dealer) wins.
+
+Choose best hand based on the hierarchy:
+IF Player 1 hand > AI hand, but < 21, cout >> "Player 1 wins!"
+IF Player 1 hand = AI hand, check hierarchy and determine which is the highest hierarchy.
+Else cout >> "AI (Dealer) wins!"
+
+Rematch?
+IF yes, repeat Round process.
+Else, return to menu.
+}
